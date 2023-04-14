@@ -1,5 +1,3 @@
-from typing import Any
-
 from .database import get_session_from_database, UrlModel
 
 
@@ -9,7 +7,9 @@ class UrlProviders:
         self.session = session()
 
     def get_url_providers(self, original_url: str) -> UrlModel:
-        existing_url = self.session.query(UrlModel).filter_by(original_url=original_url).first()
+        existing_url = (
+            self.session.query(UrlModel).filter_by(original_url=original_url).first()
+        )
         if existing_url:
             return existing_url
         return None
