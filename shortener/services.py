@@ -14,7 +14,6 @@ class UrlServices:
     def __init__(self, providers: UrlProviders):
         self.providers = providers
         self.regex = re.compile(
-            r"^(?:http|ftp)s?://"  # scheme
             r"(?:\S+(?::\S*)?@)?"  # username:password@
             r"(?P<domain>[^\s\.:]+\.[^\s]{2,})"  # domain
         )
