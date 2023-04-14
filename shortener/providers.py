@@ -8,7 +8,7 @@ class UrlProviders:
         session = get_session_from_database()
         self.session = session()
 
-    def get_url_providers(self, original_url: str) -> UrlModel | None:
+    def get_url_providers(self, original_url: str) -> UrlModel:
         existing_url = self.session.query(UrlModel).filter_by(original_url=original_url).first()
         if existing_url:
             return existing_url
@@ -21,7 +21,7 @@ class UrlProviders:
         self.session.refresh(new_url)
         return new_url
 
-    def get_url_by_shortcode(self, shortcode: str) -> UrlModel | None:
+    def get_url_by_shortcode(self, shortcode: str) -> UrlModel:
         url = self.session.query(UrlModel).filter_by(shortcode=shortcode).first()
         if url:
             return url
