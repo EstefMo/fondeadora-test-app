@@ -23,4 +23,4 @@ ENV APP_MODULE=main:app
 EXPOSE $PORT
 
 # Start server
-CMD exec uvicorn --host=0.0.0.0 --port=$PORT --workers=$WEB_CONCURRENCY $APP_MODULE
+CMD exec uvicorn --host=0.0.0.0 --port=$PORT $APP_MODULE
