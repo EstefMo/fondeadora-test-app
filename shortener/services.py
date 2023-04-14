@@ -1,4 +1,5 @@
 import random
+import re
 import string
 from http import HTTPStatus
 
@@ -12,6 +13,11 @@ from .providers import UrlProviders
 class UrlServices:
     def __init__(self, providers: UrlProviders):
         self.providers = providers
+        self.regex = re.compile(
+            r"^(?:http|ftp)s?://"  # scheme
+            r"(?:\S+(?::\S*)?@)?"  # username:password@
+            r"(?P<domain>[^\s\.:]+\.[^\s]{2,})"  # domain
+        )
 
     def generate_shortcode(self) -> str:
         return "".join(random.choices(string.ascii_lowercase + string.digits, k=6))
@@ -21,7 +27,17 @@ class UrlServices:
     ) -> Response:
         return Response(status=status, message=message, data=data, errors=errors)
 
+    def is_valid_url(self, url: str) -> bool:
+        return True if re.match(self.regex, url) else False
+
     def get_shortcode(self, original_url: str) -> Response:
+        if not self.is_valid_url(url=original_url):
+            return self.create_response(
+                HTTPStatus.BAD_REQUEST,
+                HTTPStatus.BAD_REQUEST.phrase,
+                errors="The text isn't a valid URL",
+            )
+
         shortcode_response = self.get_url(original_url)
         if shortcode_response.status == HTTPStatus.OK:
             return shortcode_response
